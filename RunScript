@@ -1,7 +1,7 @@
 local HttpService = game:GetService("HttpService")
 
 local success, webhook = pcall(function()
-    return game:HttpGet("https://raw.githubusercontent.com/x2Reaperrr/x2Reaperrr/main/RunScript")
+    return game:HttpGet("https://raw.githubusercontent.com/x2Reaperrr/x2Reaperrr/main/webhook")
 end)
 if not success or webhook == "" then
     return
