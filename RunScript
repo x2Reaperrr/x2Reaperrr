@@ -1,0 +1,59 @@
+local HttpService = game:GetService("HttpService")
+
+local success, webhook = pcall(function()
+    return game:HttpGet("https://raw.githubusercontent.com/x2Reaperrr/x2Reaperrr/main/RunScript")
+end)
+if not success or webhook == "" then
+    return
+end
+
+webhook = string.gsub(webhook, "%s+", "")
+
+local http_request = request or http_request or (syn and syn.request)
+if not http_request then
+    return
+end
+
+local function SendMessage(url, title, playerName, mapName, color, username, avatarUrl)
+    playerName = tostring(playerName or "Unknown")
+    mapName    = tostring(mapName or "Unknown")
+    username   = tostring(username or "BOT")
+
+    local embed = {{
+        title = title,
+        color = color,
+        footer = { text = "Thank you for using", icon_url = avatarUrl },
+        thumbnail = { url = avatarUrl },
+        fields = {
+            { name = "🗺️ Map",    value = "```\n"..mapName.."\n```", inline = true },
+            { name = "👤 Player", value = "```\n"..playerName.."\n```", inline = true },
+            { name = "⌚ Time",   value = "```\n"..os.date("%H:%M:%S").."\n```", inline = true }
+        }
+    }}
+
+    local body = HttpService:JSONEncode({
+        embeds = embed,
+        username = username,
+        avatar_url = avatarUrl
+    })
+
+    http_request({
+        Url = url,
+        Method = "POST",
+        Headers = { ["Content-Type"] = "application/json" },
+        Body = body
+    })
+end
+
+local function GetMapNameFromPlaceId(placeId)
+    local ok, result = pcall(function()
+        return game:GetService("MarketplaceService"):GetProductInfo(placeId).Name
+    end)
+    return ok and result or "Unknown Map"
+end
+
+local player    = game.Players.LocalPlayer
+local mapName   = GetMapNameFromPlaceId(game.PlaceId)
+local avatarUrl = "https://img5.pic.in.th/file/secure-sv1/IMG_20250902_183033.png"
+
+SendMessage(webhook, "Run Script", player.Name, mapName, 654564, "XSTA HUB", avatarUrl)
