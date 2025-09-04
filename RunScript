@@ -14,6 +14,15 @@ if not http_request then
     return
 end
 
+local function MaskName(name)
+    name = tostring(name or "Unknown")
+    if #name > 3 then
+        return string.rep("*", 3) .. string.sub(name, 4)
+    else
+        return string.rep("*", #name)
+    end
+end
+
 local function SendMessage(url, title, playerName, mapName, color, username, avatarUrl)
     playerName = tostring(playerName or "Unknown")
     mapName    = tostring(mapName or "Unknown")
@@ -22,7 +31,7 @@ local function SendMessage(url, title, playerName, mapName, color, username, ava
     local embed = {{
         title = title,
         color = color,
-        footer = { text = "Thank you for using", icon_url = avatarUrl },
+        footer = { text = "Thank you for using our script", icon_url = avatarUrl },
         thumbnail = { url = avatarUrl },
         fields = {
             { name = "🗺️ Map",    value = "```\n"..mapName.."\n```", inline = true },
@@ -56,4 +65,4 @@ local player    = game.Players.LocalPlayer
 local mapName   = GetMapNameFromPlaceId(game.PlaceId)
 local avatarUrl = "https://img5.pic.in.th/file/secure-sv1/IMG_20250902_183033.png"
 
-SendMessage(webhook, "Run Script", player.Name, mapName, 654564, "XSTA HUB", avatarUrl)
+SendMessage(webhook, "Run Script", MaskName(player.Name), mapName, 369896, "XSTA HUB", avatarUrl)
